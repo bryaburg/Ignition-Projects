@@ -1,0 +1,7 @@
+{
+  "title": "Simulator PLC Controls",
+  "description": "Application to update settings within Assembly Line Simulator PLC controls to QA Test the Lodestar Production Application.",
+  "parent": "global",
+  "enabled": true,
+  "inheritable": false
+}

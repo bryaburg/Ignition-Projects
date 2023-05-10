@@ -1,0 +1,16 @@
+{
+  "scope": "A",
+  "version": 1,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "code.py"
+  ],
+  "attributes": {
+    "lastModificationSignature": "b10787e592c27c02a5e45764a876d844e5e3a85e107a886ab1c4db68a2a7b239",
+    "lastModification": {
+      "actor": "admin",
+      "timestamp": "2021-08-20T16:04:28Z"
+    }
+  }
+}
