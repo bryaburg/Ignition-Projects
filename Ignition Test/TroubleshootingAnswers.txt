@@ -1,0 +1,79 @@
+Troubleshooting Answers
+
+1
+Answer: Right off the bat I go to Vision tab and then Windows.  Inside there I click on Refrigeration window
+and then see compressor one blacked out.  I click then right click and run the diagonitcs tool.  It give me 4 
+errors, hoa:Error_Config,
+pressureDischarge:Error_config,
+controlValue: Error_Config,
+indicator value:error_Config
+Seeing this I want to go check on those tags and make sure they are pointing to the correct tag.
+The current state of HOA OPC Item Path is, 
+"[TroubleshootingSimulator]_Meta:Refrigeration/Compressor{CompressorNumber}/hoa"
+My updated is, 
+"[TroubleshootingSimulator]_Meta:Refrigeration/Compressor1/hoa"
+So I see it was pointing to not the correct compressor.  Refreshed tag and verified it worked.
+Next I'll check pressureDischarge path,  Its current path is,
+"[TroubleshootingSimulator]_Meta:Refrigeration/Compressor{CompressorNumber}/pressureDischarge"
+Again looks like we got to update the correct path 
+"[TroubleshootingSimulator]_Meta:Refrigeration/Compressor1/pressureDischarge"
+Now it looks like after updating the tag there are no more erros on diagonitcs tool.
+
+2
+Answer: Ok so now I'm going to the Alarm Status page and see the display path changning between Discharge Valve
+and King Valve Open. Also the name saying Valve change.  From the question I'm guessing they are wanting the display
+path corrected. So now I'm going to go look at the valveDischarge tag and look at the alarms event.  I see it has a 
+Valve change state with a display Path of,
+"Discharge Valve "+
+if("{Value}","Open","Close")
+It should be 
+"Discharge Valve " + if({[.]valveDischarge.value}>=100, "Open", "Closed")
+This gives it the location of the tag and condition it to 100 and give it an argument if its lower then 100 its closed
+and if its great then 100 its open.
+
+3
+Answer: Ok going into the Vision client under Edit users. I see the entire page is broken so let me take a look.
+After looking at the Gateway I seen Allow User Admin needed to be disabled.
+In the Designer I found that in the Project Properties under Vision and permissions it was only allowing Manager.
+I add Operator and logined into operator and seen it was working now.  
+
+
+4
+Answer: First I seen when I click on tower 1 on the main window for Refrigeration I see it puts me into Tower number 2.
+I go and see that there is only 1 pop up that says its tower 2.  So I rename it Tower Detail 2 and copy and paste and rename that one to 
+Tower Detail 1.  Then under Template Properties on Tower 1 I updated it to be Tower number 1.  
+
+5
+I see the problem is when you sort out the values the color doesnt have with it.  After looking at the scirpting for configureCell
+I see in self.data.getValueAt(rowValue,"pH") > 9: and so on needs to actually be self.data.getValueAt(rowIndex,"pH") > 9: to correctly update
+the statement to look at the index itself. 
+
+6
+Answer: I found that the averages for the data was broken.  Before it was avg and after reading documentation its supposed to be average.  After updating that 
+the data looks to be good now. Where I did this was under report, page 1, table data summary, and text shape 1 and 2 
+
+7
+Answer:  I see that under the Gauge had the same as compressor.  I went to templates and seen I could discard override put it greyed it out.  I reenable override and 
+the gauge came back up.  Saved and checked in vision client and seen data coming thru properly.
+
+8
+Answer:  I found that Mary couldn't login into perpsective.  Just to verify I went to the gateway and went under her group and changed her password to password. 
+After that I tried to login again and still nothing.  So I went into the designer and check the secuirty settings.  I seen in Identity Provider that it was default 
+so I changed it to her Troubleshooting_Users profile.  Then I went and checked Perspective Permissions and made sure it was Authenticated permissions.  After saving
+the changes I went and tried to log back in and I could now. 
+
+9
+Answer:  When navigating to the Map it just throws us back at the home page.  Going into designer I went to the menu and looked at items.  Under item 2 which is the map 
+I see that target was :/.  It should be :/map based off the page config menu.  After saving it succeessfully went to the map.
+
+10
+Answer: So when navigating between pages the towers page doesnt show Header page for navigating to other pages. I went to the Perspective page config and saw it was only on
+/ home page.  I deleted it and added it to Shared settings so any page you are on you'll have that docked view so you can nagvigate thru to all pages correctly. 
+
+11
+Answer:  When going to Compressors page there doesnt seem to be anything there.  Going back to the Page Config for perspective I see that /compressors needed to be /Compressors so it grabs 
+that view.  
+
+12
+Answer:  After looking and seeing that it was showing the same I went and looked at the tower view page.  Going into tower 1 tab I seen the parms was tower 1 but when I went to tower 2 it said tower 1
+in parms.  I changed that to tower 2 and saved and seen the correct data comming thru.  
